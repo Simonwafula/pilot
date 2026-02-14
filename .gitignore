@@ -1,8 +1,11 @@
 .venv/
 __pycache__/
 .pytest_cache/
+.ruff_cache/
 *.pyc
 
 .pilot/tasks/
 .pilot/handoffs/
 .pilot/reports/
+.pilot/index/
+.pilot/verifier/
