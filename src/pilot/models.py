@@ -52,7 +52,9 @@ class Config:
     quality_gates: list[dict[str, str]] = field(default_factory=list)
     pre_edit_hooks: list[str] = field(default_factory=list)
     post_edit_hooks: list[str] = field(default_factory=list)
-    provider_profiles: dict[str, dict[str, dict[str, str]]] = field(default_factory=dict)
+    provider_profiles: dict[str, dict[str, dict[str, str]]] = field(
+        default_factory=dict
+    )
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -78,7 +80,9 @@ class Config:
                     quality_gates.append({"name": name, "command": command})
         pre_edit_hooks = _sanitize_string_list(data.get("pre_edit_hooks", []))
         post_edit_hooks = _sanitize_string_list(data.get("post_edit_hooks", []))
-        provider_profiles = _sanitize_provider_profiles(data.get("provider_profiles", {}))
+        provider_profiles = _sanitize_provider_profiles(
+            data.get("provider_profiles", {})
+        )
         return cls(
             provider=provider,
             quality_gates=quality_gates,

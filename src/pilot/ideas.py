@@ -12,9 +12,9 @@ IDEAS_DIR = ROOT_DIR / "ideas"
 
 PERSONAS: dict[str, str] = {
     "Dr. Scrutiny": "Questions assumptions, evidence, and logical consistency.",
-    "Reginald \"Rex\" Mondo": "Focuses on feasibility, resources, and implementation realism.",
-    "Valerie \"Val\" Uation": "Scrutinizes cost, ROI, and financial sustainability.",
-    "Marcus \"Mark\" Iterate": "Represents a skeptical end-user lens.",
+    'Reginald "Rex" Mondo': "Focuses on feasibility, resources, and implementation realism.",
+    'Valerie "Val" Uation': "Scrutinizes cost, ROI, and financial sustainability.",
+    'Marcus "Mark" Iterate': "Represents a skeptical end-user lens.",
     "Dr. Ethos": "Examines ethics, fairness, and misuse risk.",
     "General K.O.": "Analyzes competition and strategic vulnerabilities.",
     "Professor Simplex": "Pushes for simpler, more elegant solutions.",
@@ -23,8 +23,8 @@ PERSONAS: dict[str, str] = {
 
 DEFAULT_PANEL = [
     "Dr. Scrutiny",
-    "Reginald \"Rex\" Mondo",
-    "Marcus \"Mark\" Iterate",
+    'Reginald "Rex" Mondo',
+    'Marcus "Mark" Iterate',
     "Dr. Ethos",
     "Professor Simplex",
 ]
@@ -88,7 +88,9 @@ def list_ideas(*, task_id: str | None = None, status: str | None = None) -> list
 def save_idea(idea: dict) -> None:
     ensure_ideas_dir()
     idea["updated_at"] = utc_now_iso()
-    idea_json_path(idea["id"]).write_text(json.dumps(idea, indent=2) + "\n", encoding="utf-8")
+    idea_json_path(idea["id"]).write_text(
+        json.dumps(idea, indent=2) + "\n", encoding="utf-8"
+    )
     idea_md_path(idea["id"]).write_text(render_idea_markdown(idea), encoding="utf-8")
 
 
@@ -144,7 +146,11 @@ def add_reply(idea: dict, *, persona: str, response: str) -> dict:
 def pending_personas(idea: dict) -> list[str]:
     crucible = idea.get("crucible") or {}
     panel = crucible.get("selected_personas", [])
-    replied = {item.get("persona") for item in idea.get("replies", []) if isinstance(item, dict)}
+    replied = {
+        item.get("persona")
+        for item in idea.get("replies", [])
+        if isinstance(item, dict)
+    }
     return [persona for persona in panel if persona not in replied]
 
 
@@ -175,7 +181,9 @@ def idea_md_path(idea_id: str) -> Path:
     return IDEAS_DIR / f"{idea_id}.md"
 
 
-def generate_feature_suggestions(title: str, proposal: str, *, context: str = "") -> list[str]:
+def generate_feature_suggestions(
+    title: str, proposal: str, *, context: str = ""
+) -> list[str]:
     snippet = _snippet(proposal)
     suggestions = [
         f"Define measurable success criteria for `{title}` before implementation.",
@@ -192,7 +200,9 @@ def available_personas() -> list[str]:
 
 
 def render_idea_markdown(idea: dict) -> str:
-    suggestions = "\n".join(f"- {item}" for item in idea.get("suggestions", [])) or "- (none)"
+    suggestions = (
+        "\n".join(f"- {item}" for item in idea.get("suggestions", [])) or "- (none)"
+    )
     replies = idea.get("replies", [])
     reply_lines = (
         "\n".join(
@@ -210,20 +220,30 @@ def render_idea_markdown(idea: dict) -> str:
         for round_item in crucible.get("rounds", []):
             persona = round_item.get("persona", "Unknown")
             focus = round_item.get("focus", "")
-            critiques = "\n".join(f"  - {point}" for point in round_item.get("critiques", []))
+            critiques = "\n".join(
+                f"  - {point}" for point in round_item.get("critiques", [])
+            )
             rounds.append(f"- **{persona}** ({focus})\n{critiques}")
         rounds_block = "\n".join(rounds) if rounds else "- (none)"
         synthesis = crucible.get("synthesis", {})
-        vulnerabilities = "\n".join(
-            f"- {item}" for item in synthesis.get("critical_vulnerabilities", [])
-        ) or "- (none)"
-        themes = "\n".join(f"- {item}" for item in synthesis.get("recurring_themes", [])) or "- (none)"
-        strengths = "\n".join(
-            f"- {item}" for item in synthesis.get("potential_strengths", [])
-        ) or "- (none)"
-        reflection = "\n".join(
-            f"- {item}" for item in synthesis.get("reflection_questions", [])
-        ) or "- (none)"
+        vulnerabilities = (
+            "\n".join(
+                f"- {item}" for item in synthesis.get("critical_vulnerabilities", [])
+            )
+            or "- (none)"
+        )
+        themes = (
+            "\n".join(f"- {item}" for item in synthesis.get("recurring_themes", []))
+            or "- (none)"
+        )
+        strengths = (
+            "\n".join(f"- {item}" for item in synthesis.get("potential_strengths", []))
+            or "- (none)"
+        )
+        reflection = (
+            "\n".join(f"- {item}" for item in synthesis.get("reflection_questions", []))
+            or "- (none)"
+        )
         synthesis_block = (
             "### Critical Vulnerabilities\n"
             f"{vulnerabilities}\n\n"
@@ -236,19 +256,20 @@ def render_idea_markdown(idea: dict) -> str:
         )
 
     context_line = idea.get("context", "").strip() or "(none)"
-    return dedent(
-        f"""\
-        # Idea Record: {idea.get('id')}
+    return (
+        dedent(
+            f"""\
+        # Idea Record: {idea.get("id")}
 
         ## Meta
-        - Title: {idea.get('title')}
-        - Task: {idea.get('task_id') or '(none)'}
-        - Status: {idea.get('status')}
-        - Created: {idea.get('created_at')}
-        - Updated: {idea.get('updated_at')}
+        - Title: {idea.get("title")}
+        - Task: {idea.get("task_id") or "(none)"}
+        - Status: {idea.get("status")}
+        - Created: {idea.get("created_at")}
+        - Updated: {idea.get("updated_at")}
 
         ## Proposal
-        {idea.get('proposal', '').strip()}
+        {idea.get("proposal", "").strip()}
 
         ## Context
         {context_line}
@@ -265,7 +286,9 @@ def render_idea_markdown(idea: dict) -> str:
         ## Replies
         {reply_lines}
         """
-    ).strip() + "\n"
+        ).strip()
+        + "\n"
+    )
 
 
 def _new_idea_id() -> str:
@@ -296,17 +319,17 @@ def _persona_critiques(persona: str, idea: dict) -> list[str]:
             f"Which assumptions in `{snippet}` could fail first, and how would we detect that early?",
             "What is the strongest argument against doing this at all?",
         ],
-        "Reginald \"Rex\" Mondo": [
+        'Reginald "Rex" Mondo': [
             f"What is the smallest build plan that can realistically deliver `{title}`?",
             "Which dependencies, people, or tooling create schedule risk?",
             "What must be cut if scope or timeline becomes constrained?",
         ],
-        "Valerie \"Val\" Uation": [
+        'Valerie "Val" Uation': [
             f"What are one-time and ongoing costs for `{title}`?",
             "What measurable return justifies those costs?",
             "If adoption is 50% lower than expected, is this still viable?",
         ],
-        "Marcus \"Mark\" Iterate": [
+        'Marcus "Mark" Iterate': [
             "Why should a skeptical user switch from current behavior?",
             "Where is the current proposal adding friction or confusion?",
             "What proof will users require before trusting this?",
@@ -342,7 +365,9 @@ def _synthesize(rounds: list[dict], idea: dict) -> dict:
         critiques = item.get("critiques", [])
         if critiques:
             vulnerabilities.append(f"{item.get('persona')}: {critiques[0]}")
-        themes.append(f"{item.get('persona')} emphasized {item.get('focus', '').lower()}.")
+        themes.append(
+            f"{item.get('persona')} emphasized {item.get('focus', '').lower()}."
+        )
     vulnerabilities = vulnerabilities[:3]
     themes = themes[:3]
     strengths = [

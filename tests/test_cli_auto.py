@@ -34,7 +34,9 @@ class CliAutoTests(unittest.TestCase):
             with tempfile.TemporaryDirectory() as tmp:
                 os.chdir(tmp)
                 self.assertEqual(self._run(["init", "--provider", "codex"]), 0)
-                self.assertEqual(self._run(["new", "Auto test task", "--id", "auto-task"]), 0)
+                self.assertEqual(
+                    self._run(["new", "Auto test task", "--id", "auto-task"]), 0
+                )
 
                 # No plan steps yet, so auto should stop in plan phase.
                 self.assertEqual(self._run(["auto", "auto-task", "--skip-run"]), 1)
@@ -51,7 +53,9 @@ class CliAutoTests(unittest.TestCase):
                 )
                 self.assertEqual(rc, 0)
                 idea_id = self._extract_idea_id(out)
-                self.assertEqual(self._run(["challenge", idea_id, "--persona", "Dr. Scrutiny"]), 0)
+                self.assertEqual(
+                    self._run(["challenge", idea_id, "--persona", "Dr. Scrutiny"]), 0
+                )
                 self.assertEqual(
                     self._run(
                         [
@@ -65,7 +69,9 @@ class CliAutoTests(unittest.TestCase):
                     ),
                     0,
                 )
-                self.assertEqual(self._run(["auto", "auto-task", "--skip-run", "--force"]), 0)
+                self.assertEqual(
+                    self._run(["auto", "auto-task", "--skip-run", "--force"]), 0
+                )
                 self.assertEqual(self._run(["show", "auto-task"]), 0)
         finally:
             os.chdir(original_cwd)

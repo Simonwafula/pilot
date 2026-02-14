@@ -68,34 +68,38 @@ def audit_task(
     ready, reasons = completion_readiness(task, config)
     if ready:
         checks.append(
-            AuditCheck("quality_readiness", "pass", "All configured quality gates are passing.")
+            AuditCheck(
+                "quality_readiness", "pass", "All configured quality gates are passing."
+            )
         )
     else:
-        checks.append(
-            AuditCheck("quality_readiness", "fail", " ".join(reasons))
-        )
+        checks.append(AuditCheck("quality_readiness", "fail", " ".join(reasons)))
 
     if task.plan_steps:
         checks.append(
-            AuditCheck("plan_steps", "pass", f"{len(task.plan_steps)} plan step(s) recorded.")
+            AuditCheck(
+                "plan_steps", "pass", f"{len(task.plan_steps)} plan step(s) recorded."
+            )
         )
     else:
-        checks.append(
-            AuditCheck("plan_steps", "warn", "No plan steps recorded.")
-        )
+        checks.append(AuditCheck("plan_steps", "warn", "No plan steps recorded."))
 
     if task.handoff_file and Path(task.handoff_file).exists():
         checks.append(
-            AuditCheck("handoff_file", "pass", f"Found handoff file `{task.handoff_file}`.")
+            AuditCheck(
+                "handoff_file", "pass", f"Found handoff file `{task.handoff_file}`."
+            )
         )
     else:
-        checks.append(
-            AuditCheck("handoff_file", "warn", "Handoff file is missing.")
-        )
+        checks.append(AuditCheck("handoff_file", "warn", "Handoff file is missing."))
 
     if task.provider_runs:
         checks.append(
-            AuditCheck("provider_runs", "pass", f"{len(task.provider_runs)} provider run(s) recorded.")
+            AuditCheck(
+                "provider_runs",
+                "pass",
+                f"{len(task.provider_runs)} provider run(s) recorded.",
+            )
         )
     else:
         checks.append(
@@ -152,10 +156,14 @@ def audit_task(
                 )
             )
     else:
-        has_failed_hook = any(not bool(item.get("success", False)) for item in task.hook_runs)
+        has_failed_hook = any(
+            not bool(item.get("success", False)) for item in task.hook_runs
+        )
         if has_failed_hook:
             checks.append(
-                AuditCheck("edit_hooks", "fail", "At least one recorded edit hook failed.")
+                AuditCheck(
+                    "edit_hooks", "fail", "At least one recorded edit hook failed."
+                )
             )
         else:
             checks.append(
@@ -169,7 +177,9 @@ def audit_task(
     checks.extend(_gate_checks(gate_results))
     summary = summarize_checks(checks)
     done = evaluate_done(checks, strict=strict)
-    return AuditReport(target="task", target_id=task.id, checks=checks, summary=summary, done=done)
+    return AuditReport(
+        target="task", target_id=task.id, checks=checks, summary=summary, done=done
+    )
 
 
 def audit_workspace(
@@ -199,13 +209,9 @@ def audit_workspace(
 
     rules_file = ROOT_DIR / "templates" / "agent-rules.md"
     if rules_file.exists():
-        checks.append(
-            AuditCheck("agent_rules", "pass", f"Found `{rules_file}`.")
-        )
+        checks.append(AuditCheck("agent_rules", "pass", f"Found `{rules_file}`."))
     else:
-        checks.append(
-            AuditCheck("agent_rules", "warn", f"Missing `{rules_file}`.")
-        )
+        checks.append(AuditCheck("agent_rules", "warn", f"Missing `{rules_file}`."))
 
     agents_file = Path("AGENTS.md")
     if agents_file.exists():
@@ -214,16 +220,20 @@ def audit_workspace(
         end = "<!-- pilot-core:end -->"
         if begin in content and end in content:
             checks.append(
-                AuditCheck("agents_block", "pass", "Managed pilot block found in `AGENTS.md`.")
+                AuditCheck(
+                    "agents_block", "pass", "Managed pilot block found in `AGENTS.md`."
+                )
             )
         else:
             checks.append(
-                AuditCheck("agents_block", "warn", "Managed pilot block missing in `AGENTS.md`.")
+                AuditCheck(
+                    "agents_block",
+                    "warn",
+                    "Managed pilot block missing in `AGENTS.md`.",
+                )
             )
     else:
-        checks.append(
-            AuditCheck("agents_block", "warn", "`AGENTS.md` is missing.")
-        )
+        checks.append(AuditCheck("agents_block", "warn", "`AGENTS.md` is missing."))
 
     if gate_results is None:
         checks.append(
@@ -244,13 +254,19 @@ def audit_workspace(
             )
         else:
             checks.append(
-                AuditCheck("quality_gate_execution", "pass", "Quality gates executed during audit.")
+                AuditCheck(
+                    "quality_gate_execution",
+                    "pass",
+                    "Quality gates executed during audit.",
+                )
             )
         checks.extend(_gate_checks(gate_results))
 
     summary = summarize_checks(checks)
     done = evaluate_done(checks, strict=strict)
-    return AuditReport(target="workspace", target_id=None, checks=checks, summary=summary, done=done)
+    return AuditReport(
+        target="workspace", target_id=None, checks=checks, summary=summary, done=done
+    )
 
 
 def summarize_checks(checks: list[AuditCheck]) -> dict[str, int]:

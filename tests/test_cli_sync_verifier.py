@@ -42,7 +42,9 @@ class CliSyncVerifierTests(unittest.TestCase):
             with tempfile.TemporaryDirectory() as tmp:
                 os.chdir(tmp)
                 self.assertEqual(self._run(["init", "--provider", "codex"]), 0)
-                self.assertEqual(self._run(["new", "Verifier task", "--id", "v-task"]), 0)
+                self.assertEqual(
+                    self._run(["new", "Verifier task", "--id", "v-task"]), 0
+                )
                 self.assertEqual(self._run(["verifier", "v-task", "--dry-run"]), 1)
         finally:
             os.chdir(original_cwd)
@@ -52,15 +54,26 @@ class CliSyncVerifierTests(unittest.TestCase):
         try:
             with tempfile.TemporaryDirectory() as tmp:
                 os.chdir(tmp)
-                subprocess.run(["git", "init"], check=True, capture_output=True, text=True)
-                subprocess.run(["git", "config", "user.email", "you@example.com"], check=True)
+                subprocess.run(
+                    ["git", "init"], check=True, capture_output=True, text=True
+                )
+                subprocess.run(
+                    ["git", "config", "user.email", "you@example.com"], check=True
+                )
                 subprocess.run(["git", "config", "user.name", "Your Name"], check=True)
                 Path("README.md").write_text("# repo\n", encoding="utf-8")
                 subprocess.run(["git", "add", "README.md"], check=True)
-                subprocess.run(["git", "commit", "-m", "init"], check=True, capture_output=True, text=True)
+                subprocess.run(
+                    ["git", "commit", "-m", "init"],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                )
 
                 self.assertEqual(self._run(["init", "--provider", "codex"]), 0)
-                self.assertEqual(self._run(["new", "Verifier task", "--id", "v-task"]), 0)
+                self.assertEqual(
+                    self._run(["new", "Verifier task", "--id", "v-task"]), 0
+                )
                 self.assertEqual(
                     self._run(
                         [

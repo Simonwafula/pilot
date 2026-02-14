@@ -3,15 +3,15 @@
   "quality_gates": [
     {
       "name": "format",
-      "command": "echo 'configure formatter command in .pilot/config.json'"
+      "command": "ruff format --check ."
     },
     {
       "name": "lint",
-      "command": "echo 'configure lint command in .pilot/config.json'"
+      "command": "ruff check ."
     },
     {
       "name": "test",
-      "command": "echo 'configure test command in .pilot/config.json'"
+      "command": "env PYTHONPATH=src python3 -m unittest discover -s tests -q"
     }
   ],
   "provider_profiles": {

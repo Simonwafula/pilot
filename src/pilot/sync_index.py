@@ -33,7 +33,9 @@ def sync_workspace_index(
         for item in previous.get("files", [])
         if isinstance(item, dict)
     }
-    entries = _collect_file_entries(root, max_files=max_files, max_file_bytes=max_file_bytes)
+    entries = _collect_file_entries(
+        root, max_files=max_files, max_file_bytes=max_file_bytes
+    )
     current_by_path = {item["path"]: item["sha256"] for item in entries}
 
     added = sorted(path for path in current_by_path if path not in previous_by_path)
@@ -58,7 +60,9 @@ def sync_workspace_index(
         "files": entries,
     }
     manifest_path().write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-    context_md = _render_context_markdown(manifest, added=added, changed=changed, removed=removed)
+    context_md = _render_context_markdown(
+        manifest, added=added, changed=changed, removed=removed
+    )
     context_path().write_text(context_md, encoding="utf-8")
     return {
         "manifest": manifest,
@@ -85,7 +89,9 @@ def context_path() -> Path:
     return INDEX_DIR / "context.md"
 
 
-def _collect_file_entries(root: Path, *, max_files: int, max_file_bytes: int) -> list[dict[str, object]]:
+def _collect_file_entries(
+    root: Path, *, max_files: int, max_file_bytes: int
+) -> list[dict[str, object]]:
     entries: list[dict[str, object]] = []
     for path in sorted(root.rglob("*")):
         if len(entries) >= max_files:
@@ -109,7 +115,9 @@ def _collect_file_entries(root: Path, *, max_files: int, max_file_bytes: int) ->
         content = raw.decode("utf-8", errors="ignore")
         relative = str(path.relative_to(root))
         digest = hashlib.sha256(raw).hexdigest()
-        first_lines = [line.strip() for line in content.splitlines()[:3] if line.strip()]
+        first_lines = [
+            line.strip() for line in content.splitlines()[:3] if line.strip()
+        ]
         entry = {
             "path": relative,
             "size": stat.st_size,

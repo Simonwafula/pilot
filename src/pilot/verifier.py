@@ -30,7 +30,9 @@ def git_root(cwd: Path | None = None) -> Path:
     return Path(path)
 
 
-def create_worktree(task_id: str, *, base_ref: str = "HEAD", cwd: Path | None = None) -> Path:
+def create_worktree(
+    task_id: str, *, base_ref: str = "HEAD", cwd: Path | None = None
+) -> Path:
     ensure_layout()
     root = ensure_git_repo(cwd=cwd)
     verifier_root = root / VERIFIER_DIR
@@ -101,7 +103,9 @@ def run_quality_gates_in_dir(
     return results
 
 
-def _run_git(args: list[str], *, cwd: Path | None = None, check: bool = True) -> subprocess.CompletedProcess[str]:
+def _run_git(
+    args: list[str], *, cwd: Path | None = None, check: bool = True
+) -> subprocess.CompletedProcess[str]:
     command = ["git", *args]
     completed = subprocess.run(
         command,
@@ -111,5 +115,7 @@ def _run_git(args: list[str], *, cwd: Path | None = None, check: bool = True) ->
     )
     if check and completed.returncode != 0:
         stderr = (completed.stderr or "").strip()
-        raise RuntimeError(f"`{' '.join(command)}` failed: {stderr or completed.returncode}")
+        raise RuntimeError(
+            f"`{' '.join(command)}` failed: {stderr or completed.returncode}"
+        )
     return completed

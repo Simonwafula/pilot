@@ -4,7 +4,13 @@ import unittest
 from unittest.mock import patch
 
 from pilot.models import Config, QualityResult, Task
-from pilot.workflow import advance_phase, apply_quality_results, phase_report, render_handoff, set_phase
+from pilot.workflow import (
+    advance_phase,
+    apply_quality_results,
+    phase_report,
+    render_handoff,
+    set_phase,
+)
 
 
 class WorkflowTests(unittest.TestCase):
@@ -116,7 +122,10 @@ class WorkflowTests(unittest.TestCase):
             plan_steps=["step 1"],
         )
         config = Config(provider="codex", quality_gates=[])
-        with patch("pilot.workflow.task_idea_compliance", return_value=(True, "idea pipeline passed")):
+        with patch(
+            "pilot.workflow.task_idea_compliance",
+            return_value=(True, "idea pipeline passed"),
+        ):
             transition = advance_phase(task, config=config)
         self.assertEqual(transition, "plan -> implement")
         self.assertEqual(task.phase, "implement")

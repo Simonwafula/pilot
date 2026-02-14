@@ -34,7 +34,9 @@ class CliIdeasTests(unittest.TestCase):
             with tempfile.TemporaryDirectory() as tmp:
                 os.chdir(tmp)
                 self.assertEqual(self._run(["init", "--provider", "codex"]), 0)
-                self.assertEqual(self._run(["new", "Idea workflow task", "--id", "idea-task"]), 0)
+                self.assertEqual(
+                    self._run(["new", "Idea workflow task", "--id", "idea-task"]), 0
+                )
 
                 rc, out, _ = self._run_capture(
                     [
@@ -48,7 +50,9 @@ class CliIdeasTests(unittest.TestCase):
                 self.assertEqual(rc, 0)
                 idea_id = self._extract_idea_id(out)
 
-                self.assertEqual(self._run(["challenge", idea_id, "--persona", "Dr. Scrutiny"]), 0)
+                self.assertEqual(
+                    self._run(["challenge", idea_id, "--persona", "Dr. Scrutiny"]), 0
+                )
                 self.assertEqual(
                     self._run(
                         [

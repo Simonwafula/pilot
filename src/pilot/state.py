@@ -56,9 +56,18 @@ def init_workspace(provider: str = "codex", force: bool = False) -> Config:
 
 def default_quality_gates() -> list[dict[str, str]]:
     return [
-        {"name": "format", "command": "echo 'configure formatter command in .pilot/config.json'"},
-        {"name": "lint", "command": "echo 'configure lint command in .pilot/config.json'"},
-        {"name": "test", "command": "echo 'configure test command in .pilot/config.json'"},
+        {
+            "name": "format",
+            "command": "echo 'configure formatter command in .pilot/config.json'",
+        },
+        {
+            "name": "lint",
+            "command": "echo 'configure lint command in .pilot/config.json'",
+        },
+        {
+            "name": "test",
+            "command": "echo 'configure test command in .pilot/config.json'",
+        },
     ]
 
 
@@ -148,12 +157,16 @@ def list_tasks() -> list[Task]:
     return tasks
 
 
-def resolve_task(task_id: str | None = None, preferred_statuses: Iterable[str] | None = None) -> Task:
+def resolve_task(
+    task_id: str | None = None, preferred_statuses: Iterable[str] | None = None
+) -> Task:
     if task_id:
         return load_task(task_id)
     tasks = list_tasks()
     if not tasks:
-        raise FileNotFoundError("No tasks found. Create one with `pilot new \"your task\"`.")
+        raise FileNotFoundError(
+            'No tasks found. Create one with `pilot new "your task"`.'
+        )
     if preferred_statuses:
         status_set = set(preferred_statuses)
         for task in tasks:

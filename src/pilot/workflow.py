@@ -27,7 +27,9 @@ def set_status(task: Task, status: str) -> None:
         task.phase = "complete"
     elif status == "verifying":
         task.phase = "verify"
-    elif status == "in_progress" and _phase_index(task.phase) < _phase_index("implement"):
+    elif status == "in_progress" and _phase_index(task.phase) < _phase_index(
+        "implement"
+    ):
         task.phase = "implement"
     elif status == "planned" and _phase_index(task.phase) > _phase_index("plan"):
         task.phase = "plan"
@@ -50,7 +52,9 @@ def phase_report(task: Task, config: Config | None = None) -> dict[str, object]:
     blocking_reasons: list[str] = []
     if next_phase == "implement":
         if not task.plan_steps:
-            blocking_reasons.append("At least one plan step is required before entering implement.")
+            blocking_reasons.append(
+                "At least one plan step is required before entering implement."
+            )
         idea_ok, idea_detail = task_idea_compliance(task.id)
         if not idea_ok:
             blocking_reasons.append(f"Idea pipeline is incomplete. {idea_detail}")
@@ -112,7 +116,9 @@ def set_phase(task: Task, phase: str, config: Config, force: bool = False) -> st
 
 def completion_readiness(task: Task, config: Config) -> tuple[bool, list[str]]:
     reasons: list[str] = []
-    required_gate_names = [gate.get("name", "") for gate in config.quality_gates if gate.get("name")]
+    required_gate_names = [
+        gate.get("name", "") for gate in config.quality_gates if gate.get("name")
+    ]
     if not required_gate_names:
         return True, reasons
 
@@ -126,7 +132,9 @@ def completion_readiness(task: Task, config: Config) -> tuple[bool, list[str]]:
             reasons.append(f"Quality gate '{gate_name}' has not been run.")
             continue
         if not result.success:
-            reasons.append(f"Quality gate '{gate_name}' is failing (exit code {result.exit_code}).")
+            reasons.append(
+                f"Quality gate '{gate_name}' is failing (exit code {result.exit_code})."
+            )
 
     return len(reasons) == 0, reasons
 
@@ -144,7 +152,9 @@ def tdd_readiness(task: Task) -> tuple[bool, str]:
     )
 
 
-def run_quality_gates(config: Config, gate_name: str | None = None, dry_run: bool = False) -> list[QualityResult]:
+def run_quality_gates(
+    config: Config, gate_name: str | None = None, dry_run: bool = False
+) -> list[QualityResult]:
     gates = config.quality_gates
     if gate_name:
         gates = [gate for gate in gates if gate.get("name") == gate_name]
@@ -205,9 +215,15 @@ def apply_quality_results(task: Task, results: list[QualityResult]) -> None:
         task.status = "blocked"
 
 
-def render_handoff(task: Task, provider: str, handoff_file: str, extra_notes: str = "") -> str:
-    plan_lines = [f"- {item}" for item in task.plan_steps] if task.plan_steps else ["- (none)"]
-    note_lines = [f"- {item}" for item in task.notes[-10:]] if task.notes else ["- (none)"]
+def render_handoff(
+    task: Task, provider: str, handoff_file: str, extra_notes: str = ""
+) -> str:
+    plan_lines = (
+        [f"- {item}" for item in task.plan_steps] if task.plan_steps else ["- (none)"]
+    )
+    note_lines = (
+        [f"- {item}" for item in task.notes[-10:]] if task.notes else ["- (none)"]
+    )
     quality_lines = _render_quality_summary(task)
     resume_hint = command_hint(provider, task, handoff_file)
     lines = [

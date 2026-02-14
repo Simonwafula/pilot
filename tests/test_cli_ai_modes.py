@@ -27,10 +27,16 @@ class CliAiModesTests(unittest.TestCase):
             with tempfile.TemporaryDirectory() as tmp:
                 os.chdir(tmp)
                 self.assertEqual(self._run(["init", "--provider", "codex"]), 0)
-                self.assertEqual(self._run(["new", "AI planning task", "--id", "ai-task"]), 0)
-                self.assertEqual(self._run(["spec", "advance", "--task-id", "ai-task"]), 0)
+                self.assertEqual(
+                    self._run(["new", "AI planning task", "--id", "ai-task"]), 0
+                )
+                self.assertEqual(
+                    self._run(["spec", "advance", "--task-id", "ai-task"]), 0
+                )
                 self.assertEqual(self._run(["plan", "ai-task", "Scope feature"]), 0)
-                self.assertEqual(self._run(["spec", "advance", "--task-id", "ai-task", "--force"]), 0)
+                self.assertEqual(
+                    self._run(["spec", "advance", "--task-id", "ai-task", "--force"]), 0
+                )
 
                 rc, out, _ = self._run_capture(["plan-ai", "ai-task", "--dry-run"])
                 self.assertEqual(rc, 0)

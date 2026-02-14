@@ -151,7 +151,9 @@ def apply_fixes(preferred_provider: str = "codex") -> tuple[Config, list[FixActi
 
     rules_file = ROOT_DIR / "templates" / "agent-rules.md"
     desired_rules = default_agent_rules(config.provider)
-    existing_rules = rules_file.read_text(encoding="utf-8") if rules_file.exists() else ""
+    existing_rules = (
+        rules_file.read_text(encoding="utf-8") if rules_file.exists() else ""
+    )
     if existing_rules != desired_rules:
         rules_file.parent.mkdir(parents=True, exist_ok=True)
         rules_file.write_text(desired_rules, encoding="utf-8")
@@ -183,7 +185,9 @@ def summarize(results: list[DoctorResult]) -> dict[str, int]:
 def _check_workspace_initialized() -> DoctorResult:
     if CONFIG_FILE.exists():
         return DoctorResult("workspace", "pass", f"Found {CONFIG_FILE}.")
-    return DoctorResult("workspace", "fail", f"Missing {CONFIG_FILE}. Run `pilot init`.")
+    return DoctorResult(
+        "workspace", "fail", f"Missing {CONFIG_FILE}. Run `pilot init`."
+    )
 
 
 def _check_reports_dir_writable() -> DoctorResult:
@@ -194,7 +198,9 @@ def _check_reports_dir_writable() -> DoctorResult:
         marker.unlink()
         return DoctorResult("reports_dir", "pass", f"{REPORTS_DIR} is writable.")
     except OSError as exc:
-        return DoctorResult("reports_dir", "fail", f"{REPORTS_DIR} is not writable: {exc}")
+        return DoctorResult(
+            "reports_dir", "fail", f"{REPORTS_DIR} is not writable: {exc}"
+        )
 
 
 def _check_provider_binary(config: Config) -> DoctorResult:
@@ -202,15 +208,21 @@ def _check_provider_binary(config: Config) -> DoctorResult:
     executable = command[0]
     path = shutil.which(executable)
     if path is None:
-        return DoctorResult("provider_binary", "fail", f"`{executable}` is not in PATH.")
-    return DoctorResult("provider_binary", "pass", f"`{executable}` resolved to {path}.")
+        return DoctorResult(
+            "provider_binary", "fail", f"`{executable}` is not in PATH."
+        )
+    return DoctorResult(
+        "provider_binary", "pass", f"`{executable}` resolved to {path}."
+    )
 
 
 def _check_provider_help(config: Config, timeout_seconds: int = 8) -> DoctorResult:
     command = _provider_help_command(config.provider)
     executable = command[0]
     if shutil.which(executable) is None:
-        return DoctorResult("provider_help", "warn", f"Skipped because `{executable}` is missing.")
+        return DoctorResult(
+            "provider_help", "warn", f"Skipped because `{executable}` is missing."
+        )
     try:
         completed = subprocess.run(
             command,
@@ -225,7 +237,9 @@ def _check_provider_help(config: Config, timeout_seconds: int = 8) -> DoctorResu
             f"`{' '.join(command)}` timed out after {timeout_seconds}s.",
         )
     if completed.returncode == 0:
-        return DoctorResult("provider_help", "pass", f"`{' '.join(command)}` succeeded.")
+        return DoctorResult(
+            "provider_help", "pass", f"`{' '.join(command)}` succeeded."
+        )
     stderr = (completed.stderr or "").strip()
     detail = f"`{' '.join(command)}` exited {completed.returncode}."
     if stderr:
@@ -293,7 +307,11 @@ def _check_quality_gate_commands(config: Config) -> list[DoctorResult]:
 def _check_hook_commands(commands: list[str], *, hook_name: str) -> list[DoctorResult]:
     results: list[DoctorResult] = []
     if not commands:
-        return [DoctorResult(f"{hook_name}_hooks", "warn", f"No {hook_name} hooks configured.")]
+        return [
+            DoctorResult(
+                f"{hook_name}_hooks", "warn", f"No {hook_name} hooks configured."
+            )
+        ]
     for idx, command in enumerate(commands, start=1):
         executable = _command_executable(command)
         label = f"{hook_name}_hook:{idx}"

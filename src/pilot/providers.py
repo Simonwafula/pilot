@@ -52,18 +52,18 @@ def command_hint(provider: str, task: Task, handoff_file: str) -> str:
     provider = normalize_provider(provider)
     if provider == "codex":
         return (
-            "codex \"Resume task "
+            'codex "Resume task '
             + task.id
             + " using handoff file "
             + handoff_file
-            + " and follow AGENTS.md\""
+            + ' and follow AGENTS.md"'
         )
     return (
-        "opencode run \"Resume task "
+        'opencode run "Resume task '
         + task.id
         + " using handoff file "
         + handoff_file
-        + " and follow AGENTS.md\""
+        + ' and follow AGENTS.md"'
     )
 
 
@@ -87,7 +87,9 @@ def resume_prompt(provider: str, task: Task, handoff_file: str) -> str:
     )
 
 
-def build_run_prompt(provider: str, task: Task, handoff_file: str, extra_instructions: str = "") -> str:
+def build_run_prompt(
+    provider: str, task: Task, handoff_file: str, extra_instructions: str = ""
+) -> str:
     provider = normalize_provider(provider)
     base = resume_prompt(provider, task, handoff_file).strip()
     extra = extra_instructions.strip()
@@ -120,7 +122,9 @@ def provider_command(
         profile = settings.get("profile", "").strip()
         if profile:
             command.extend(["-p", profile])
-        reasoning_effort = normalize_reasoning_effort(settings.get("reasoning_effort", ""))
+        reasoning_effort = normalize_reasoning_effort(
+            settings.get("reasoning_effort", "")
+        )
         if reasoning_effort:
             escaped = reasoning_effort.replace('"', '\\"')
             command.extend(["-c", f'reasoning_effort="{escaped}"'])
@@ -174,7 +178,9 @@ def run_provider_command(
         timed_out = False
     except subprocess.TimeoutExpired as exc:
         exit_code = 124
-        stdout = _clean_output((exc.stdout or "") if isinstance(exc.stdout, str) else "")
+        stdout = _clean_output(
+            (exc.stdout or "") if isinstance(exc.stdout, str) else ""
+        )
         stderr = f"Command timed out after {timeout_seconds}s."
         timed_out = True
 

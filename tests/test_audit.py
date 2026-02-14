@@ -41,9 +41,15 @@ class AuditTests(unittest.TestCase):
                 )
             ],
         )
-        with patch("pilot.audit.task_idea_compliance", return_value=(True, "idea pipeline passed")), patch(
-            "pilot.audit.tdd_readiness",
-            return_value=(True, "tdd cycle complete"),
+        with (
+            patch(
+                "pilot.audit.task_idea_compliance",
+                return_value=(True, "idea pipeline passed"),
+            ),
+            patch(
+                "pilot.audit.tdd_readiness",
+                return_value=(True, "tdd cycle complete"),
+            ),
         ):
             report = audit_task(task, config, gate_results=None, strict=False)
         self.assertTrue(report.done)
@@ -62,13 +68,20 @@ class AuditTests(unittest.TestCase):
             created_at="2026-02-14T00:00:00+00:00",
             updated_at="2026-02-14T00:00:00+00:00",
         )
-        with patch(
-            "pilot.audit.task_idea_compliance",
-            return_value=(False, "No idea record found for this task."),
-        ), patch("pilot.audit.tdd_readiness", return_value=(True, "tdd cycle complete")):
+        with (
+            patch(
+                "pilot.audit.task_idea_compliance",
+                return_value=(False, "No idea record found for this task."),
+            ),
+            patch(
+                "pilot.audit.tdd_readiness", return_value=(True, "tdd cycle complete")
+            ),
+        ):
             report = audit_task(task, config, gate_results=None, strict=False)
         self.assertFalse(report.done)
-        idea_check = next(item for item in report.checks if item.name == "idea_pipeline")
+        idea_check = next(
+            item for item in report.checks if item.name == "idea_pipeline"
+        )
         self.assertEqual(idea_check.status, "fail")
 
     def test_workspace_audit_warns_when_gates_not_run(self) -> None:

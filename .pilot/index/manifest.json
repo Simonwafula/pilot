@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-02-14T11:02:51+00:00",
+  "generated_at": "2026-02-14T11:59:39+00:00",
   "root": "/Users/hp/Library/CloudStorage/OneDrive-Personal/Codes/pilot",
   "max_files": 800,
   "max_file_bytes": 250000,
   "summary": {
-    "indexed_files": 26,
+    "indexed_files": 28,
     "added": 0,
-    "changed": 4,
+    "changed": 0,
     "removed": 0
   },
   "files": [
@@ -19,6 +19,22 @@
       "line_count": 8
     },
     {
+      "path": ".ruff_cache/.gitignore",
+      "size": 35,
+      "mtime": 1771070091,
+      "sha256": "9e3a60f1e6ec4ae60215c11d54b171392745ec25e9dded433d5bd921363af316",
+      "preview": "# Automatically created by ruff. | *",
+      "line_count": 2
+    },
+    {
+      "path": ".ruff_cache/CACHEDIR.TAG",
+      "size": 43,
+      "mtime": 1771070091,
+      "sha256": "5953156d7e0c564a427251316eaf26f8870e6483ae2197f916b630e4f93e31ae",
+      "preview": "Signature: 8a477f597d28d172789f06886806bc55",
+      "line_count": 1
+    },
+    {
       "path": "AGENTS.md",
       "size": 279,
       "mtime": 1771059052,
@@ -28,11 +44,11 @@
     },
     {
       "path": "README.md",
-      "size": 8721,
-      "mtime": 1771066947,
-      "sha256": "051d662d244c630611b13cdd9e3a629f09c8b361159534c7a16b79e1e1cd21ce",
+      "size": 9291,
+      "mtime": 1771067596,
+      "sha256": "c935c2a281d9aeb8a0ae8bbd8ffe60ad97443e3f425f9ca6a6a46ecc23e0d09b",
       "preview": "# pilot-core | Clean-room reimplementation of the core idea behind agent workflow products:",
-      "line_count": 274
+      "line_count": 303
     },
     {
       "path": "pilot",
@@ -60,131 +76,131 @@
     },
     {
       "path": "src/pilot/audit.py",
-      "size": 8985,
-      "mtime": 1771066350,
-      "sha256": "ed6b3ffbaa3f40041c9a24dca230f7db5c470ec558e6bca52a00b5eba6f8ce95",
+      "size": 9290,
+      "mtime": 1771070102,
+      "sha256": "e756a761498bb9fa9ee8567e8828fc025aa5bf3e2955ad93fa17280e13875407",
       "preview": "from __future__ import annotations | from dataclasses import dataclass",
-      "line_count": 290
+      "line_count": 306
     },
     {
       "path": "src/pilot/cli.py",
-      "size": 57595,
-      "mtime": 1771066373,
-      "sha256": "f7d3ce1c01b98e6b303147ea4b52c3f8fc04248858c32c285c2d8c92cd0182bc",
+      "size": 59414,
+      "mtime": 1771070102,
+      "sha256": "71435b893a6a79ca21c5092808ae431c9af2cecc589fdead03609c7984277c15",
       "preview": "from __future__ import annotations | import argparse",
-      "line_count": 1569
+      "line_count": 1789
     },
     {
       "path": "src/pilot/doctor.py",
-      "size": 14505,
-      "mtime": 1771065574,
-      "sha256": "21ae9a86c2e4faf6433b5b950f62ebb350e1cd3be81495fcd50cdec766f97758",
+      "size": 14689,
+      "mtime": 1771070102,
+      "sha256": "c9680cc9977dcd06e312b891913907f7ee2496d513968250a2b28ac2408b03bd",
       "preview": "from __future__ import annotations | import shlex",
-      "line_count": 447
+      "line_count": 465
     },
     {
       "path": "src/pilot/ideas.py",
-      "size": 13164,
-      "mtime": 1771061688,
-      "sha256": "2daeb7b4d9665e21ce31ed9792651cdb8f18abfb89e5f01c3c1e191b175ccc01",
+      "size": 13406,
+      "mtime": 1771070102,
+      "sha256": "134129629c6e256e6a39e0331c03cc2501f372b3641c6441a6b43d966158fb95",
       "preview": "from __future__ import annotations | import json",
-      "line_count": 377
+      "line_count": 402
     },
     {
       "path": "src/pilot/models.py",
-      "size": 9042,
-      "mtime": 1771066217,
-      "sha256": "d60a40a37736251980a1e5f9e8d65e4f86615339438559b5a83dad4a7a8771fd",
+      "size": 9078,
+      "mtime": 1771070102,
+      "sha256": "dca8271e46dae1ca6da504ebcaac784e8223faadc9531f1e7a5e2f4956bd8823",
       "preview": "from __future__ import annotations | from dataclasses import dataclass, field",
-      "line_count": 242
+      "line_count": 246
     },
     {
       "path": "src/pilot/providers.py",
-      "size": 8159,
-      "mtime": 1771066923,
-      "sha256": "d06147035c780e44ed7a6ae2945de801d4adb24b76dc46d0b457c36ae5f63f67",
+      "size": 8205,
+      "mtime": 1771070102,
+      "sha256": "2ba92477c9eb468ead11a8317cc96e026821b3263c7e46880e0d89819e7b98d0",
       "preview": "from __future__ import annotations | import shutil",
-      "line_count": 249
+      "line_count": 255
     },
     {
       "path": "src/pilot/state.py",
-      "size": 4843,
-      "mtime": 1771066931,
-      "sha256": "0b66cd9ad73dfdcf9a7e6132caa9974ca4654b038f21168f7430dc052c7325d7",
+      "size": 4974,
+      "mtime": 1771070102,
+      "sha256": "65e25ae3bcc3b42e05316afa18c0c473ca053b9f6fa51fd5d8a5659562cba765",
       "preview": "from __future__ import annotations | import json",
-      "line_count": 166
+      "line_count": 179
     },
     {
       "path": "src/pilot/sync_index.py",
-      "size": 5925,
-      "mtime": 1771066483,
-      "sha256": "cd6d447e41ce48a32806987aef79454eb7a1f7fc2d91d242feb1ac6dfbda2269",
+      "size": 5981,
+      "mtime": 1771070102,
+      "sha256": "8e8e2c74ece6b170f0397e80032380d84fa3fa3579521d9fabb661b5a42b2771",
       "preview": "from __future__ import annotations | import hashlib",
-      "line_count": 199
+      "line_count": 207
     },
     {
       "path": "src/pilot/verifier.py",
-      "size": 3686,
-      "mtime": 1771066281,
-      "sha256": "43e7f2b4ceb46551587e68c109a33074c1cb8653d4160301ff3d617268f99e0b",
+      "size": 3720,
+      "mtime": 1771070102,
+      "sha256": "0fa31a3a830c6c35d3ca28d429fedb7ce57a7b89c700033a8e25adbce43d6112",
       "preview": "from __future__ import annotations | import secrets",
-      "line_count": 115
+      "line_count": 121
     },
     {
       "path": "src/pilot/workflow.py",
-      "size": 10576,
-      "mtime": 1771065190,
-      "sha256": "95b28e682333e3bb612c2c77688f46fd4d43ee21ddf27710520a17107c95e0e7",
+      "size": 10708,
+      "mtime": 1771070102,
+      "sha256": "f4a9efc4dd71cbf81133cdfb6c2e90d75394562cd8c0bee2491e05680235bbe6",
       "preview": "from __future__ import annotations | import subprocess",
-      "line_count": 302
+      "line_count": 318
     },
     {
       "path": "tests/test_audit.py",
-      "size": 3190,
-      "mtime": 1771065130,
-      "sha256": "19588be4154688d030ae2fecd0344571dc0180ac064634322c0d706c514e2e02",
+      "size": 3387,
+      "mtime": 1771070102,
+      "sha256": "28ad11959f25d04886e0104e068ae55253b7db9434a6543f3c00983e7d1c7981",
       "preview": "from __future__ import annotations | import unittest",
-      "line_count": 85
+      "line_count": 98
     },
     {
       "path": "tests/test_cli_ai_modes.py",
-      "size": 1685,
-      "mtime": 1771065718,
-      "sha256": "2143263d29a33f7e51fe3e3d08248ea61805c793ca493736de7a9476e905de27",
+      "size": 1799,
+      "mtime": 1771070102,
+      "sha256": "c6855bf59fb9adf9303b4adc9c6ff784e3dff200c4080839acf6e5b059e9474d",
       "preview": "from __future__ import annotations | import contextlib",
-      "line_count": 47
+      "line_count": 53
     },
     {
       "path": "tests/test_cli_audit.py",
-      "size": 4977,
-      "mtime": 1771065151,
-      "sha256": "6fef0a14e0079791e13e4a46856084926fc791fde6f0003ad340a2b9a84c21ce",
+      "size": 5433,
+      "mtime": 1771070102,
+      "sha256": "4d416360bc607e774612b74c2adc71bd6dd1147ba935ee3e9bd4155c1a8a301e",
       "preview": "from __future__ import annotations | import contextlib",
-      "line_count": 113
+      "line_count": 137
     },
     {
       "path": "tests/test_cli_auto.py",
-      "size": 2728,
-      "mtime": 1771065135,
-      "sha256": "6b3e5a13d8c9ac795565de98832d497a4cfda5cf96d850eed5eab80ae4947b1e",
+      "size": 2842,
+      "mtime": 1771070102,
+      "sha256": "14c057283c8460333224c235cb408e3cb3f9f34bdaa659d02f3f72dd66b22aa5",
       "preview": "from __future__ import annotations | import contextlib",
-      "line_count": 75
+      "line_count": 81
     },
     {
       "path": "tests/test_cli_ideas.py",
-      "size": 2477,
-      "mtime": 1771061912,
-      "sha256": "ff99c95ec8ad87b23f05624407b35a478f454d9c2ce2e6b8c8d4219b2fddd917",
+      "size": 2553,
+      "mtime": 1771070102,
+      "sha256": "38b66f7fc252d577c827e54b05b765e8caafc656a7ad5daaf50b31379d7349d1",
       "preview": "from __future__ import annotations | import contextlib",
-      "line_count": 72
+      "line_count": 76
     },
     {
       "path": "tests/test_cli_sync_verifier.py",
-      "size": 3231,
-      "mtime": 1771066399,
-      "sha256": "3d4b99257fb39f6d15cb3f78b6f45fa875b119856db250bb59440be677be3504",
+      "size": 3482,
+      "mtime": 1771070102,
+      "sha256": "84b487ee274c8f8e91ab58c16046ad8109c54da7069ed1f06283e6b4bec40b20",
       "preview": "from __future__ import annotations | import contextlib",
-      "line_count": 83
+      "line_count": 96
     },
     {
       "path": "tests/test_doctor.py",
@@ -212,11 +228,11 @@
     },
     {
       "path": "tests/test_workflow.py",
-      "size": 6801,
-      "mtime": 1771065159,
-      "sha256": "22c324ce0547ff3c8d4cfcf5fd2ec3ccbb49149c33c773c18ff5d511b1e0bc52",
+      "size": 6861,
+      "mtime": 1771070102,
+      "sha256": "2b364063d5819c1061a3c1a7c0222ec084e6c33c23ecb482f59678bfdbdf82a4",
       "preview": "from __future__ import annotations | import unittest",
-      "line_count": 187
+      "line_count": 196
     }
   ]
 }

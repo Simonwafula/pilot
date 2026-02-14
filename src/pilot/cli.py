@@ -48,7 +48,12 @@ from .state import (
     save_task,
 )
 from .sync_index import sync_workspace_index
-from .verifier import create_worktree, ensure_git_repo, remove_worktree, run_quality_gates_in_dir
+from .verifier import (
+    create_worktree,
+    ensure_git_repo,
+    remove_worktree,
+    run_quality_gates_in_dir,
+)
 from .workflow import (
     SPEC_PHASES,
     VALID_STATUSES,
@@ -74,7 +79,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     init_cmd = sub.add_parser("init", help="Initialize .pilot workspace")
     init_cmd.add_argument("--provider", default="codex", choices=["codex", "opencode"])
-    init_cmd.add_argument("--force", action="store_true", help="Overwrite .pilot/config.json")
+    init_cmd.add_argument(
+        "--force", action="store_true", help="Overwrite .pilot/config.json"
+    )
 
     new_cmd = sub.add_parser("new", help="Create a task")
     new_cmd.add_argument("title", help="Task title")
@@ -84,11 +91,19 @@ def build_parser() -> argparse.ArgumentParser:
     plan_cmd.add_argument("task_id", help="Task id")
     plan_cmd.add_argument("step", help="Plan step text")
 
-    plan_ai_cmd = sub.add_parser("plan-ai", help="Run provider-assisted planning analysis")
-    plan_ai_cmd.add_argument("task_id", nargs="?", help="Task id (defaults to latest active task)")
+    plan_ai_cmd = sub.add_parser(
+        "plan-ai", help="Run provider-assisted planning analysis"
+    )
+    plan_ai_cmd.add_argument(
+        "task_id", nargs="?", help="Task id (defaults to latest active task)"
+    )
     plan_ai_cmd.add_argument("--extra", default="", help="Extra planning instruction")
-    plan_ai_cmd.add_argument("--dry-run", action="store_true", help="Print command and prompt only")
-    plan_ai_cmd.add_argument("--timeout", type=int, default=0, help="Provider timeout seconds")
+    plan_ai_cmd.add_argument(
+        "--dry-run", action="store_true", help="Print command and prompt only"
+    )
+    plan_ai_cmd.add_argument(
+        "--timeout", type=int, default=0, help="Provider timeout seconds"
+    )
 
     note_cmd = sub.add_parser("note", help="Append a note to a task")
     note_cmd.add_argument("task_id", help="Task id")
@@ -99,18 +114,28 @@ def build_parser() -> argparse.ArgumentParser:
     status_cmd.add_argument("status", choices=sorted(VALID_STATUSES))
 
     tasks_cmd = sub.add_parser("tasks", help="List tasks")
-    tasks_cmd.add_argument("--all", action="store_true", help="Show completed tasks too")
+    tasks_cmd.add_argument(
+        "--all", action="store_true", help="Show completed tasks too"
+    )
 
     show_cmd = sub.add_parser("show", help="Show one task")
-    show_cmd.add_argument("task_id", nargs="?", help="Task id (defaults to latest active task)")
+    show_cmd.add_argument(
+        "task_id", nargs="?", help="Task id (defaults to latest active task)"
+    )
 
     check_cmd = sub.add_parser("check", help="Run quality gates")
-    check_cmd.add_argument("task_id", nargs="?", help="Task id (defaults to latest active task)")
+    check_cmd.add_argument(
+        "task_id", nargs="?", help="Task id (defaults to latest active task)"
+    )
     check_cmd.add_argument("--gate", help="Run one named gate")
     check_cmd.add_argument("--dry-run", action="store_true")
 
-    verify_cmd = sub.add_parser("verify", help="Run quality gates and attempt completion")
-    verify_cmd.add_argument("task_id", nargs="?", help="Task id (defaults to latest active task)")
+    verify_cmd = sub.add_parser(
+        "verify", help="Run quality gates and attempt completion"
+    )
+    verify_cmd.add_argument(
+        "task_id", nargs="?", help="Task id (defaults to latest active task)"
+    )
     verify_cmd.add_argument("--gate", help="Run one named gate")
     verify_cmd.add_argument("--dry-run", action="store_true")
     verify_cmd.add_argument(
@@ -120,57 +145,125 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     handoff_cmd = sub.add_parser("handoff", help="Write handoff markdown")
-    handoff_cmd.add_argument("task_id", nargs="?", help="Task id (defaults to latest active task)")
+    handoff_cmd.add_argument(
+        "task_id", nargs="?", help="Task id (defaults to latest active task)"
+    )
     handoff_cmd.add_argument("--notes", default="", help="Additional handoff notes")
 
     resume_cmd = sub.add_parser("resume", help="Print resume prompt for provider")
-    resume_cmd.add_argument("task_id", nargs="?", help="Task id (defaults to latest active task)")
+    resume_cmd.add_argument(
+        "task_id", nargs="?", help="Task id (defaults to latest active task)"
+    )
 
     spec_cmd = sub.add_parser("spec", help="Manage phase-gated task workflow")
-    spec_cmd.add_argument("action", nargs="?", default="status", choices=["status", "advance", "set"])
+    spec_cmd.add_argument(
+        "action", nargs="?", default="status", choices=["status", "advance", "set"]
+    )
     spec_cmd.add_argument("phase", nargs="?", choices=SPEC_PHASES)
     spec_cmd.add_argument("--task-id", help="Task id (defaults to latest active task)")
-    spec_cmd.add_argument("--force", action="store_true", help="Override transition guardrails")
+    spec_cmd.add_argument(
+        "--force", action="store_true", help="Override transition guardrails"
+    )
 
-    run_cmd = sub.add_parser("run", help="Run provider CLI with generated prompt and logging")
-    run_cmd.add_argument("task_id", nargs="?", help="Task id (defaults to latest active task)")
-    run_cmd.add_argument("--extra", default="", help="Extra instruction appended to provider prompt")
-    run_cmd.add_argument("--dry-run", action="store_true", help="Print command and prompt only")
-    run_cmd.add_argument("--timeout", type=int, default=0, help="Timeout seconds (0 means no timeout)")
+    run_cmd = sub.add_parser(
+        "run", help="Run provider CLI with generated prompt and logging"
+    )
+    run_cmd.add_argument(
+        "task_id", nargs="?", help="Task id (defaults to latest active task)"
+    )
+    run_cmd.add_argument(
+        "--extra", default="", help="Extra instruction appended to provider prompt"
+    )
+    run_cmd.add_argument(
+        "--dry-run", action="store_true", help="Print command and prompt only"
+    )
+    run_cmd.add_argument(
+        "--timeout", type=int, default=0, help="Timeout seconds (0 means no timeout)"
+    )
 
-    sync_cmd = sub.add_parser("sync", help="Build local workspace memory/index for continuity")
-    sync_cmd.add_argument("--max-files", type=int, default=800, help="Maximum files to index")
-    sync_cmd.add_argument("--max-bytes", type=int, default=250000, help="Maximum bytes per indexed file")
-    sync_cmd.add_argument("--json", action="store_true", help="Output machine-readable JSON")
+    sync_cmd = sub.add_parser(
+        "sync", help="Build local workspace memory/index for continuity"
+    )
+    sync_cmd.add_argument(
+        "--max-files", type=int, default=800, help="Maximum files to index"
+    )
+    sync_cmd.add_argument(
+        "--max-bytes", type=int, default=250000, help="Maximum bytes per indexed file"
+    )
+    sync_cmd.add_argument(
+        "--json", action="store_true", help="Output machine-readable JSON"
+    )
 
-    verifier_cmd = sub.add_parser("verifier", help="Run isolated verifier lane in a separate git worktree")
-    verifier_cmd.add_argument("task_id", nargs="?", help="Task id (defaults to latest active task)")
-    verifier_cmd.add_argument("--base-ref", default="HEAD", help="Git ref for worktree base")
-    verifier_cmd.add_argument("--skip-gates", action="store_true", help="Skip quality gate execution in verifier lane")
-    verifier_cmd.add_argument("--skip-provider", action="store_true", help="Skip provider review pass in verifier lane")
-    verifier_cmd.add_argument("--keep-worktree", action="store_true", help="Keep verifier worktree after run")
-    verifier_cmd.add_argument("--dry-run", action="store_true", help="Print commands/prompts only")
-    verifier_cmd.add_argument("--timeout", type=int, default=0, help="Provider timeout seconds")
+    verifier_cmd = sub.add_parser(
+        "verifier", help="Run isolated verifier lane in a separate git worktree"
+    )
+    verifier_cmd.add_argument(
+        "task_id", nargs="?", help="Task id (defaults to latest active task)"
+    )
+    verifier_cmd.add_argument(
+        "--base-ref", default="HEAD", help="Git ref for worktree base"
+    )
+    verifier_cmd.add_argument(
+        "--skip-gates",
+        action="store_true",
+        help="Skip quality gate execution in verifier lane",
+    )
+    verifier_cmd.add_argument(
+        "--skip-provider",
+        action="store_true",
+        help="Skip provider review pass in verifier lane",
+    )
+    verifier_cmd.add_argument(
+        "--keep-worktree", action="store_true", help="Keep verifier worktree after run"
+    )
+    verifier_cmd.add_argument(
+        "--dry-run", action="store_true", help="Print commands/prompts only"
+    )
+    verifier_cmd.add_argument(
+        "--timeout", type=int, default=0, help="Provider timeout seconds"
+    )
 
     auto_cmd = sub.add_parser("auto", help="Run end-to-end workflow pipeline")
-    auto_cmd.add_argument("task_id", nargs="?", help="Task id (defaults to latest active task)")
-    auto_cmd.add_argument("--extra", default="", help="Extra instruction for provider run")
-    auto_cmd.add_argument("--timeout", type=int, default=0, help="Provider run timeout seconds")
-    auto_cmd.add_argument("--force", action="store_true", help="Override blocked transitions when possible")
-    auto_cmd.add_argument("--skip-run", action="store_true", help="Skip provider execution in implement phase")
-    auto_cmd.add_argument("--skip-verify", action="store_true", help="Stop before verification/completion")
+    auto_cmd.add_argument(
+        "task_id", nargs="?", help="Task id (defaults to latest active task)"
+    )
+    auto_cmd.add_argument(
+        "--extra", default="", help="Extra instruction for provider run"
+    )
+    auto_cmd.add_argument(
+        "--timeout", type=int, default=0, help="Provider run timeout seconds"
+    )
+    auto_cmd.add_argument(
+        "--force",
+        action="store_true",
+        help="Override blocked transitions when possible",
+    )
+    auto_cmd.add_argument(
+        "--skip-run",
+        action="store_true",
+        help="Skip provider execution in implement phase",
+    )
+    auto_cmd.add_argument(
+        "--skip-verify", action="store_true", help="Stop before verification/completion"
+    )
 
     tdd_cmd = sub.add_parser("tdd", help="Run and record RED/GREEN/REFACTOR loop steps")
     tdd_cmd.add_argument("action", choices=["status", "red", "green", "refactor"])
-    tdd_cmd.add_argument("task_id", nargs="?", help="Task id (defaults to latest active task)")
-    tdd_cmd.add_argument("--dry-run", action="store_true", help="Run checks in dry-run mode")
+    tdd_cmd.add_argument(
+        "task_id", nargs="?", help="Task id (defaults to latest active task)"
+    )
+    tdd_cmd.add_argument(
+        "--dry-run", action="store_true", help="Run checks in dry-run mode"
+    )
 
     suggest_cmd = sub.add_parser("suggest", help="Feature suggestion mode for ideas")
     suggest_cmd.add_argument("title", help="Idea title")
     suggest_cmd.add_argument("proposal", help="Core idea/proposal text")
     suggest_cmd.add_argument("--context", default="", help="Optional context or goal")
     suggest_cmd.add_argument("--task-id", help="Optional linked task id")
-    suggest_cmd.add_argument("--json", action="store_true", help="Output machine-readable JSON")
+    suggest_cmd.add_argument(
+        "--json", action="store_true", help="Output machine-readable JSON"
+    )
 
     challenge_cmd = sub.add_parser("challenge", help="Devil's advocate crucible mode")
     challenge_cmd.add_argument("idea_id", help="Idea record id")
@@ -180,32 +273,61 @@ def build_parser() -> argparse.ArgumentParser:
         choices=available_personas(),
         help="Select specific persona(s); defaults to diverse panel",
     )
-    challenge_cmd.add_argument("--json", action="store_true", help="Output machine-readable JSON")
+    challenge_cmd.add_argument(
+        "--json", action="store_true", help="Output machine-readable JSON"
+    )
 
     reply_cmd = sub.add_parser("reply", help="Record a reply to a persona critique")
     reply_cmd.add_argument("idea_id", help="Idea record id")
-    reply_cmd.add_argument("--persona", required=True, choices=available_personas(), help="Persona name")
+    reply_cmd.add_argument(
+        "--persona", required=True, choices=available_personas(), help="Persona name"
+    )
     reply_cmd.add_argument("--response", required=True, help="Response text")
-    reply_cmd.add_argument("--json", action="store_true", help="Output machine-readable JSON")
+    reply_cmd.add_argument(
+        "--json", action="store_true", help="Output machine-readable JSON"
+    )
 
     ideas_cmd = sub.add_parser("ideas", help="List idea records")
     ideas_cmd.add_argument("--task-id", help="Filter by task id")
     ideas_cmd.add_argument("--status", help="Filter by status")
-    ideas_cmd.add_argument("--json", action="store_true", help="Output machine-readable JSON")
+    ideas_cmd.add_argument(
+        "--json", action="store_true", help="Output machine-readable JSON"
+    )
 
     idea_show_cmd = sub.add_parser("idea-show", help="Show one idea record")
     idea_show_cmd.add_argument("idea_id", help="Idea record id")
-    idea_show_cmd.add_argument("--json", action="store_true", help="Output machine-readable JSON")
+    idea_show_cmd.add_argument(
+        "--json", action="store_true", help="Output machine-readable JSON"
+    )
 
-    audit_cmd = sub.add_parser("audit", help="Audit task/workspace completion and readiness")
-    audit_cmd.add_argument("task_id", nargs="?", help="Task id (defaults to latest task)")
-    audit_cmd.add_argument("--workspace", action="store_true", help="Audit workspace instead of a task")
-    audit_cmd.add_argument("--strict", action="store_true", help="Fail when warnings are present")
-    audit_cmd.add_argument("--json", action="store_true", help="Output machine-readable JSON")
-    audit_cmd.add_argument("--dry-run", action="store_true", help="Dry-run quality gates during audit")
-    audit_cmd.add_argument("--no-run-gates", dest="run_gates", action="store_false", help="Skip quality gate execution")
+    audit_cmd = sub.add_parser(
+        "audit", help="Audit task/workspace completion and readiness"
+    )
+    audit_cmd.add_argument(
+        "task_id", nargs="?", help="Task id (defaults to latest task)"
+    )
+    audit_cmd.add_argument(
+        "--workspace", action="store_true", help="Audit workspace instead of a task"
+    )
+    audit_cmd.add_argument(
+        "--strict", action="store_true", help="Fail when warnings are present"
+    )
+    audit_cmd.add_argument(
+        "--json", action="store_true", help="Output machine-readable JSON"
+    )
+    audit_cmd.add_argument(
+        "--dry-run", action="store_true", help="Dry-run quality gates during audit"
+    )
+    audit_cmd.add_argument(
+        "--no-run-gates",
+        dest="run_gates",
+        action="store_false",
+        help="Skip quality gate execution",
+    )
     audit_cmd.add_argument("--gate", help="Run one named gate when executing gates")
-    audit_cmd.add_argument("--fix", action="store_true", help="Apply safe automatic fixes before audit")
+    audit_cmd.add_argument(
+        "--fix", action="store_true", help="Apply safe automatic fixes before audit"
+    )
     audit_cmd.add_argument(
         "--provider",
         default="codex",
@@ -214,17 +336,35 @@ def build_parser() -> argparse.ArgumentParser:
     )
     audit_cmd.set_defaults(run_gates=True)
 
-    audit_ai_cmd = sub.add_parser("audit-ai", help="Run provider-assisted audit analysis")
-    audit_ai_cmd.add_argument("task_id", nargs="?", help="Task id (defaults to latest active task)")
-    audit_ai_cmd.add_argument("--workspace", action="store_true", help="Analyze workspace audit instead of task")
-    audit_ai_cmd.add_argument("--strict", action="store_true", help="Use strict local audit snapshot")
+    audit_ai_cmd = sub.add_parser(
+        "audit-ai", help="Run provider-assisted audit analysis"
+    )
+    audit_ai_cmd.add_argument(
+        "task_id", nargs="?", help="Task id (defaults to latest active task)"
+    )
+    audit_ai_cmd.add_argument(
+        "--workspace",
+        action="store_true",
+        help="Analyze workspace audit instead of task",
+    )
+    audit_ai_cmd.add_argument(
+        "--strict", action="store_true", help="Use strict local audit snapshot"
+    )
     audit_ai_cmd.add_argument("--extra", default="", help="Extra audit instruction")
-    audit_ai_cmd.add_argument("--dry-run", action="store_true", help="Print command and prompt only")
-    audit_ai_cmd.add_argument("--timeout", type=int, default=0, help="Provider timeout seconds")
+    audit_ai_cmd.add_argument(
+        "--dry-run", action="store_true", help="Print command and prompt only"
+    )
+    audit_ai_cmd.add_argument(
+        "--timeout", type=int, default=0, help="Provider timeout seconds"
+    )
 
     doctor_cmd = sub.add_parser("doctor", help="Check provider/runtime prerequisites")
-    doctor_cmd.add_argument("--json", action="store_true", help="Output machine-readable JSON")
-    doctor_cmd.add_argument("--fix", action="store_true", help="Apply safe automatic fixes before checks")
+    doctor_cmd.add_argument(
+        "--json", action="store_true", help="Output machine-readable JSON"
+    )
+    doctor_cmd.add_argument(
+        "--fix", action="store_true", help="Apply safe automatic fixes before checks"
+    )
     doctor_cmd.add_argument(
         "--provider",
         default="codex",
@@ -327,7 +467,10 @@ def cmd_tasks(args: argparse.Namespace) -> int:
 
 def cmd_show(args: argparse.Namespace) -> int:
     _require_initialized()
-    task = resolve_task(args.task_id, preferred_statuses=["planned", "in_progress", "blocked", "verifying"])
+    task = resolve_task(
+        args.task_id,
+        preferred_statuses=["planned", "in_progress", "blocked", "verifying"],
+    )
     print(f"id: {task.id}")
     print(f"title: {task.title}")
     print(f"status: {task.status}")
@@ -351,11 +494,15 @@ def cmd_show(args: argparse.Namespace) -> int:
     if task.provider_runs:
         print(f"provider_runs: {len(task.provider_runs)}")
         last = task.provider_runs[-1]
-        print(f"last_run: provider={last.get('provider')} exit_code={last.get('exit_code')} report={last.get('report_file')}")
+        print(
+            f"last_run: provider={last.get('provider')} exit_code={last.get('exit_code')} report={last.get('report_file')}"
+        )
     if task.verifier_runs:
         print(f"verifier_runs: {len(task.verifier_runs)}")
         latest_verifier = task.verifier_runs[-1]
-        print(f"latest_verifier: success={latest_verifier.get('success')} base_ref={latest_verifier.get('base_ref')}")
+        print(
+            f"latest_verifier: success={latest_verifier.get('success')} base_ref={latest_verifier.get('base_ref')}"
+        )
     if task.hook_runs:
         print(f"hook_runs: {len(task.hook_runs)}")
     if task.tdd_cycles:
@@ -368,7 +515,10 @@ def cmd_show(args: argparse.Namespace) -> int:
 def cmd_check(args: argparse.Namespace) -> int:
     _require_initialized()
     config = load_config()
-    task = resolve_task(args.task_id, preferred_statuses=["planned", "in_progress", "blocked", "verifying"])
+    task = resolve_task(
+        args.task_id,
+        preferred_statuses=["planned", "in_progress", "blocked", "verifying"],
+    )
     results = run_quality_gates(config, gate_name=args.gate, dry_run=args.dry_run)
     apply_quality_results(task, results)
     save_task(task)
@@ -389,7 +539,10 @@ def cmd_check(args: argparse.Namespace) -> int:
 def cmd_verify(args: argparse.Namespace) -> int:
     _require_initialized()
     config = load_config()
-    task = resolve_task(args.task_id, preferred_statuses=["planned", "in_progress", "blocked", "verifying"])
+    task = resolve_task(
+        args.task_id,
+        preferred_statuses=["planned", "in_progress", "blocked", "verifying"],
+    )
     return _run_verify_for_task(
         task,
         config,
@@ -402,9 +555,14 @@ def cmd_verify(args: argparse.Namespace) -> int:
 def cmd_handoff(args: argparse.Namespace) -> int:
     _require_initialized()
     config = load_config()
-    task = resolve_task(args.task_id, preferred_statuses=["planned", "in_progress", "blocked", "verifying"])
+    task = resolve_task(
+        args.task_id,
+        preferred_statuses=["planned", "in_progress", "blocked", "verifying"],
+    )
     output_path = handoff_path(task.id)
-    markdown = render_handoff(task, config.provider, str(output_path), extra_notes=args.notes)
+    markdown = render_handoff(
+        task, config.provider, str(output_path), extra_notes=args.notes
+    )
     output_path.write_text(markdown, encoding="utf-8")
     task.handoff_file = str(output_path)
     task.touch()
@@ -416,7 +574,10 @@ def cmd_handoff(args: argparse.Namespace) -> int:
 def cmd_resume(args: argparse.Namespace) -> int:
     _require_initialized()
     config = load_config()
-    task = resolve_task(args.task_id, preferred_statuses=["planned", "in_progress", "blocked", "verifying"])
+    task = resolve_task(
+        args.task_id,
+        preferred_statuses=["planned", "in_progress", "blocked", "verifying"],
+    )
     handoff_file = task.handoff_file or str(handoff_path(task.id))
     print(resume_prompt(config.provider, task, handoff_file))
     return 0
@@ -493,12 +654,18 @@ def cmd_sync(args: argparse.Namespace) -> int:
     manifest = result.get("manifest", {})
     summary = {}
     if isinstance(manifest, dict):
-        summary = manifest.get("summary", {}) if isinstance(manifest.get("summary"), dict) else {}
+        summary = (
+            manifest.get("summary", {})
+            if isinstance(manifest.get("summary"), dict)
+            else {}
+        )
     print(f"index_dir: {INDEX_DIR}")
     print(f"manifest: {result.get('manifest_file')}")
     print(f"context: {result.get('context_file')}")
     print(f"indexed_files: {summary.get('indexed_files', 0)}")
-    print(f"added: {summary.get('added', 0)} changed: {summary.get('changed', 0)} removed: {summary.get('removed', 0)}")
+    print(
+        f"added: {summary.get('added', 0)} changed: {summary.get('changed', 0)} removed: {summary.get('removed', 0)}"
+    )
     return 0
 
 
@@ -507,7 +674,13 @@ def cmd_verifier(args: argparse.Namespace) -> int:
     config = load_config()
     task = resolve_task(
         args.task_id,
-        preferred_statuses=["planned", "in_progress", "blocked", "verifying", "completed"],
+        preferred_statuses=[
+            "planned",
+            "in_progress",
+            "blocked",
+            "verifying",
+            "completed",
+        ],
     )
     sync_workspace_index()
     git_root = ensure_git_repo()
@@ -521,7 +694,9 @@ def cmd_verifier(args: argparse.Namespace) -> int:
         print(f"worktree_dir: {VERIFIER_DIR}")
         print(f"base_ref: {args.base_ref}")
         print(f"provider_settings: {settings if settings else {}}")
-        print(f"planned_git_command: git worktree add --detach <lane_path> {args.base_ref}")
+        print(
+            f"planned_git_command: git worktree add --detach <lane_path> {args.base_ref}"
+        )
         if not args.skip_gates:
             print("planned_quality_gates:")
             for gate in config.quality_gates:
@@ -543,10 +718,14 @@ def cmd_verifier(args: argparse.Namespace) -> int:
         lane_path = create_worktree(task.id, base_ref=args.base_ref)
         print(f"verifier_worktree: {lane_path}")
         if not args.skip_gates:
-            gate_results = run_quality_gates_in_dir(config, cwd=lane_path, dry_run=False)
+            gate_results = run_quality_gates_in_dir(
+                config, cwd=lane_path, dry_run=False
+            )
             for result in gate_results:
                 status = "PASS" if result.success else "FAIL"
-                print(f"[{status}] verifier gate {result.name}: {result.command} (code={result.exit_code})")
+                print(
+                    f"[{status}] verifier gate {result.name}: {result.command} (code={result.exit_code})"
+                )
             if any(not result.success for result in gate_results):
                 lanes_ok = False
 
@@ -559,7 +738,9 @@ def cmd_verifier(args: argparse.Namespace) -> int:
                 settings=settings,
                 cwd=str(lane_path),
             )
-            provider_report_file = _write_analysis_report("verifier", task.id, provider_result)
+            provider_report_file = _write_analysis_report(
+                "verifier", task.id, provider_result
+            )
             print(f"verifier_provider_report: {provider_report_file}")
             print(f"verifier_provider_exit: {provider_result['exit_code']}")
             if provider_result["exit_code"] != 0:
@@ -581,12 +762,19 @@ def cmd_verifier(args: argparse.Namespace) -> int:
         "skip_provider": bool(args.skip_provider),
         "settings": settings,
         "gate_results": [item.to_dict() for item in gate_results],
-        "provider_exit_code": provider_result["exit_code"] if isinstance(provider_result, dict) else None,
-        "provider_report_file": str(provider_report_file) if provider_report_file else None,
+        "provider_exit_code": provider_result["exit_code"]
+        if isinstance(provider_result, dict)
+        else None,
+        "provider_report_file": str(provider_report_file)
+        if provider_report_file
+        else None,
         "success": lanes_ok,
     }
     task.verifier_runs.append(run_record)
-    add_note(task, f"Verifier lane {'passed' if lanes_ok else 'failed'} at {run_record['ran_at']}.")
+    add_note(
+        task,
+        f"Verifier lane {'passed' if lanes_ok else 'failed'} at {run_record['ran_at']}.",
+    )
     if not lanes_ok:
         task.status = "blocked"
     save_task(task)
@@ -630,7 +818,7 @@ def cmd_auto(args: argparse.Namespace) -> int:
             if not task.plan_steps and not args.force:
                 raise ValueError(
                     "Auto pipeline requires at least one plan step in `plan` phase. "
-                    "Add one with `pilot plan <task_id> \"...\"` or rerun with --force."
+                    'Add one with `pilot plan <task_id> "..."` or rerun with --force.'
                 )
             transition = set_phase(task, "implement", config=config, force=args.force)
             save_task(task)
@@ -824,7 +1012,7 @@ def cmd_challenge(args: argparse.Namespace) -> int:
         print(f"- vulnerability: {item}")
     for item in synthesis.get("recurring_themes", []):
         print(f"- theme: {item}")
-    print(f"next: ./pilot reply {idea['id']} --persona \"{panel[0]}\" --response \"...\"")
+    print(f'next: ./pilot reply {idea["id"]} --persona "{panel[0]}" --response "..."')
     return 0
 
 
@@ -838,7 +1026,11 @@ def cmd_reply(args: argparse.Namespace) -> int:
     )
     pending = pending_personas(idea)
     if args.json:
-        payload = {"idea_id": idea["id"], "status": idea["status"], "pending_personas": pending}
+        payload = {
+            "idea_id": idea["id"],
+            "status": idea["status"],
+            "pending_personas": pending,
+        }
         print(json.dumps(payload, indent=2))
         return 0
     print(f"idea_id: {idea['id']}")
@@ -946,7 +1138,9 @@ def cmd_audit(args: argparse.Namespace) -> int:
                 "warn": sum(1 for item in report.checks if item.status == "warn"),
                 "fail": sum(1 for item in report.checks if item.status == "fail"),
             }
-            report.done = report.done and (not args.strict or report.summary["warn"] == 0)
+            report.done = report.done and (
+                not args.strict or report.summary["warn"] == 0
+            )
         else:
             if gate_results is not None:
                 apply_quality_results(task, gate_results)
@@ -1032,8 +1226,14 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     results = run_doctor(config)
     if args.json:
         payload = {
-            "fixes": [{"name": item.name, "status": item.status, "detail": item.detail} for item in fixes],
-            "checks": [{"name": item.name, "status": item.status, "detail": item.detail} for item in results],
+            "fixes": [
+                {"name": item.name, "status": item.status, "detail": item.detail}
+                for item in fixes
+            ],
+            "checks": [
+                {"name": item.name, "status": item.status, "detail": item.detail}
+                for item in results
+            ],
         }
         payload["summary"] = summarize(results)
         print(json.dumps(payload, indent=2))
@@ -1136,7 +1336,9 @@ def _run_provider_for_task(
         add_note(task, f"Provider run succeeded: {report_file}")
     else:
         task.status = "blocked"
-        add_note(task, f"Provider run failed (exit={result['exit_code']}): {report_file}")
+        add_note(
+            task, f"Provider run failed (exit={result['exit_code']}): {report_file}"
+        )
     if result["exit_code"] == 0:
         post_ok, post_results = _run_hook_commands(
             config.post_edit_hooks,
@@ -1275,9 +1477,12 @@ def _run_analysis_context(
 
 
 def _build_plan_ai_prompt(task, handoff_file: str, *, extra: str = "") -> str:
-    extra_block = f"\n\nOperator instructions:\n{extra.strip()}" if extra.strip() else ""
-    return dedent(
-        f"""\
+    extra_block = (
+        f"\n\nOperator instructions:\n{extra.strip()}" if extra.strip() else ""
+    )
+    return (
+        dedent(
+            f"""\
         You are assisting with planning for task `{task.id}`: {task.title}.
 
         Use this context:
@@ -1291,14 +1496,19 @@ def _build_plan_ai_prompt(task, handoff_file: str, *, extra: str = "") -> str:
         3. Suggested first execution step
         4. Verification strategy linked to quality gates
         """
-    ).strip() + extra_block
+        ).strip()
+        + extra_block
+    )
 
 
 def _build_audit_ai_prompt(report: dict[str, object], *, extra: str = "") -> str:
-    extra_block = f"\n\nOperator instructions:\n{extra.strip()}" if extra.strip() else ""
+    extra_block = (
+        f"\n\nOperator instructions:\n{extra.strip()}" if extra.strip() else ""
+    )
     serialized = json.dumps(report, indent=2)
-    return dedent(
-        f"""\
+    return (
+        dedent(
+            f"""\
         Analyze this local audit report and produce a focused remediation plan.
 
         Audit report JSON:
@@ -1310,7 +1520,9 @@ def _build_audit_ai_prompt(report: dict[str, object], *, extra: str = "") -> str
         3. Recommended sequence of commands
         4. Residual risks after remediation
         """
-    ).strip() + extra_block
+        ).strip()
+        + extra_block
+    )
 
 
 def _build_verifier_prompt(task, worktree_path: Path, base_ref: str) -> str:
@@ -1368,7 +1580,9 @@ def _run_hook_commands(
         }
         results.append(result)
         status = "PASS" if success else "FAIL"
-        print(f"[{status}] hook:{hook_name}:{idx}: {command} (code={completed.returncode})")
+        print(
+            f"[{status}] hook:{hook_name}:{idx}: {command} (code={completed.returncode})"
+        )
         if result["stdout"]:
             print(f"stdout: {_preview_text(str(result['stdout']), limit=800)}")
         if result["stderr"]:
@@ -1391,7 +1605,9 @@ def _print_gate_results(results) -> None:
 def _require_quality_gate(config, gate_name: str) -> None:
     names = {gate.get("name", "") for gate in config.quality_gates}
     if gate_name not in names:
-        raise ValueError(f"TDD requires a quality gate named `{gate_name}` in .pilot/config.json.")
+        raise ValueError(
+            f"TDD requires a quality gate named `{gate_name}` in .pilot/config.json."
+        )
 
 
 def _print_tdd_status(task) -> None:
@@ -1472,7 +1688,9 @@ def _resolve_task_for_audit(task_id: str | None):
 
 def _require_initialized() -> None:
     if not CONFIG_FILE.exists():
-        raise FileNotFoundError("Workspace not initialized. Run `pilot init --provider codex|opencode`.")
+        raise FileNotFoundError(
+            "Workspace not initialized. Run `pilot init --provider codex|opencode`."
+        )
 
 
 def _write_provider_report(task_id: str, result: dict[str, object]) -> Path:
@@ -1482,7 +1700,9 @@ def _write_provider_report(task_id: str, result: dict[str, object]) -> Path:
     return report_file
 
 
-def _write_analysis_report(context: str, target_id: str, result: dict[str, object]) -> Path:
+def _write_analysis_report(
+    context: str, target_id: str, result: dict[str, object]
+) -> Path:
     stamp = utc_now_iso().replace(":", "").replace("-", "").replace("+00:00", "Z")
     slug = target_id.replace("/", "_").replace(" ", "_")
     report_file = REPORTS_DIR / f"analysis-{context}-{slug}-{stamp}.json"
