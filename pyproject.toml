@@ -12,6 +12,7 @@ dependencies = []
 
 [project.scripts]
 pilot = "pilot.cli:main"
+pilot-core = "pilot.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

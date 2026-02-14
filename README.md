@@ -42,6 +42,14 @@ pilot doctor
 pilot sync
 ```
 
+If `pilot` resolves to another tool on your machine, use this project's alternate command:
+
+```bash
+pilot-core init --provider codex
+pilot-core doctor
+pilot-core sync
+```
+
 For an already implemented app/codebase:
 
 ```bash
