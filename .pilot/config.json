@@ -1,0 +1,62 @@
+{
+  "provider": "opencode",
+  "quality_gates": [
+    {
+      "name": "format",
+      "command": "echo 'configure formatter command in .pilot/config.json'"
+    },
+    {
+      "name": "lint",
+      "command": "echo 'configure lint command in .pilot/config.json'"
+    },
+    {
+      "name": "test",
+      "command": "echo 'configure test command in .pilot/config.json'"
+    }
+  ],
+  "provider_profiles": {
+    "plan": {
+      "codex": {
+        "model": "gpt-5.3-codex",
+        "reasoning_effort": "high"
+      },
+      "opencode": {
+        "model": "glm-5",
+        "variant": "max",
+        "thinking": "true"
+      }
+    },
+    "audit": {
+      "codex": {
+        "model": "gpt-5.3-codex",
+        "reasoning_effort": "xhigh"
+      },
+      "opencode": {
+        "model": "glm-5",
+        "variant": "max",
+        "thinking": "true"
+      }
+    },
+    "verifier": {
+      "codex": {
+        "model": "gpt-5.3-codex",
+        "reasoning_effort": "xhigh"
+      },
+      "opencode": {
+        "model": "glm-5",
+        "variant": "max",
+        "thinking": "true"
+      }
+    },
+    "implement": {
+      "codex": {
+        "model": "gpt-5.3-codex",
+        "reasoning_effort": "medium"
+      },
+      "opencode": {
+        "model": "glm-4.7",
+        "variant": "medium"
+      }
+    }
+  }
+}
